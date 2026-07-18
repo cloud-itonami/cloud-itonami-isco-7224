@@ -1,0 +1,11 @@
+[{:itonami.blueprint/social-impact [:worker-safety :finish-quality :production-continuity]
+  :itonami.blueprint/domain :manufacturing/metal-polishing-workshop-scheduling-coordination
+  :itonami.blueprint/required-technologies [:robotics :identity :audit-ledger]
+  :itonami.blueprint/isco-08 "7224"
+  :itonami.blueprint/name "Metal Polishing Workshop Scheduling Coordination Practice"
+  :itonami.blueprint/governor :metal-polisher-governor
+  :itonami.blueprint/robotics true
+  :db/id -1
+  :itonami.blueprint/status :public-oss
+  :itonami.blueprint/id "cloud-itonami-isco-7224"
+  :itonami.blueprint/license "AGPL-3.0-or-later"}]
