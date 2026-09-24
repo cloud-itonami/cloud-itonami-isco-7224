@@ -1,5 +1,5 @@
 (ns metalpolisher.governor-test
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [metalpolisher.store :as store]
             [metalpolisher.advisor :as advisor]
             [metalpolisher.governor :as governor]))
