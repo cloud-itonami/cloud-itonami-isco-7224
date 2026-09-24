@@ -1,0 +1,35 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:physics` runs it.
+;;
+;; README "Robotics premise": a workshop scheduling/logistics coordination
+;; robot for metal polishers, wheel grinders and tool sharpeners (ISCO 7224)
+;; schedules the crew, logs task, materials usage and progress, and
+;; coordinates abrasive-materials/tooling supply orders; it never grinds or
+;; polishes. Its physical work is staging parts at the grinding stations; the
+;; physics behind the particulate-exposure concern it must surface is
+;; whether the stations' dust-extraction duct can carry the airflow they
+;; need.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isco-7224"
+ :cases
+ [{:id :part-to-grinding-station
+   :kind :manipulator
+   :procedure "arm takes a cast or forged part off the tote and places it on the grinding / polishing station's work rest"
+   :params {:l1-m 0.60 :l2-m 0.55 :m1-kg 9.0 :m2-kg 6.0
+            :from [0.60 0.15] :to [0.70 0.75] :duration-s 2.0 :steps 400}
+   :sweep {:param :payload-kg :values [2.0 5.0 10.0 15.0 20.0]}
+   :quantity :peak-tau1-nm
+   :limit {:max 150.0 :basis "estimate: continuous shoulder torque of a ~10-12 kg-payload collaborative arm class"}
+   :boundary {:lo 0.5 :hi 60.0}}
+  {:id :grinding-dust-extraction
+   :kind :pipe-flow
+   :procedure "dust extraction from the grinding stations: air drawn through a 160 mm spiral duct, 22 m to the dust collector; the extract airflow (number of stations open) is swept"
+   :params {:diameter-m 0.16 :length-m 22.0 :roughness-m 1.5e-4
+            :density-kg-m3 1.2 :viscosity-pa-s 1.8e-5 :pump-efficiency 0.55}
+   :sweep {:param :q-m3s :values [0.10 0.20 0.30 0.40 0.50]}
+   :quantity :pressure-drop-pa
+   :limit {:max 800.0 :basis "estimate: share of the dust collector fan's static pressure left for the main duct after hoods, filter and cyclone"}
+   :boundary {:lo 0.05 :hi 1.0}}]}
